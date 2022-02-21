@@ -38,6 +38,9 @@ function increaseNewValue() {
         newDisplay.value = '0';
     } else if (newDisplay.value==='0') {
         newDisplay.value = '';
+    } else if (oldDisplay.value.includes('=')) {
+        oldDisplayValue = '';
+        oldDisplay.value = '';
     }
     newDisplay.value += this.textContent;
 }
@@ -91,12 +94,12 @@ function trackOldDisplay () {
 
 
     if (oldDisplay.value.includes('=')) {
-        oldDisplay.value = oldDisplay.value = oldDisplayValue + ' ' + this.textContent;
+        oldDisplay.value = oldDisplay.value = parseFloat(oldDisplayValue.toFixed(7)) + ' ' + this.textContent;
     } else if (currentOperator==='') {
-        oldDisplayValue = newDisplay.value;
+        oldDisplayValue = parseFloat(Number(newDisplay.value).toFixed(7));
         oldDisplay.value = newDisplay.value + ' ' + this.textContent;
     } else { 
-        oldDisplayValue = operate(currentOperator, Number(oldDisplayValue), Number(newDisplay.value));
+        oldDisplayValue = parseFloat(operate(currentOperator, Number(oldDisplayValue), Number(newDisplay.value)).toFixed(7));
         oldDisplay.value = oldDisplayValue + ' ' + this.textContent;
     }
     newDisplay.value = ''
@@ -144,8 +147,8 @@ function equalOldDisplay() {
             break;
     }
     oldDisplay.value = oldDisplayValue + ' ' + currentOperatorType + ' ' + newDisplay.value + ' = ' ;
-    oldDisplayValue = operate(currentOperator, Number(oldDisplayValue), Number(newDisplay.value));
-    oldDisplay.value += oldDisplayValue;
+    oldDisplayValue = parseFloat(operate(currentOperator, Number(oldDisplayValue), Number(newDisplay.value)).toFixed(7));
+    oldDisplay.value += parseFloat(oldDisplayValue.toFixed(7));
     newDisplay.value = '';
     currentOperator ='';
 }
